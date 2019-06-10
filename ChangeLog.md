@@ -1,3 +1,3 @@
-# Changelog for basicvarianttools
+# Changelog for Basic-Variant-Tools
 
 ## Unreleased changes
