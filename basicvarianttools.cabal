@@ -6,11 +6,11 @@ cabal-version: 1.12
 --
 -- hash: 69ef94d80642a48a35183886f44cdf5529c02c99a2ca71c6750ea211d32f43ac
 
-name:           basicvarianttools
+name:           Basic-Variant-Tools
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/basicvarianttools#readme>
-homepage:       https://github.com/githubuser/basicvarianttools#readme
-bug-reports:    https://github.com/githubuser/basicvarianttools/issues
+description:    Please see the README on GitHub at <https://github.com/Matthew-Mosior/Basic-Variant-Tools#readme>
+homepage:       https://github.com/Matthew-Mosior/Basic-Variant-Tools#readme
+bug-reports:    https://github.com/Matthew-Mosior/Basic-Variant-Tools/issues
 author:         Matthew Mosior
 maintainer:     mattm.github@gmail.com
 copyright:      Matthew Mosior, 2019
@@ -23,8 +23,8 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/basicvarianttools
-
+  location: https://github.com/Matthew-Mosior/Basic-Variant-Tools
+  
 library
   exposed-modules:
       Bvf
