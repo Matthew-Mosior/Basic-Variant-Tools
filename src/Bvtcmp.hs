@@ -135,13 +135,30 @@ outFormatVtbrOpt = OA.option parseOutFormatVtbr
           OA.metavar "OUT" ])
 ------------- 
 
---flag'.
+--flag's.
 stripHeaderFlag' :: OA.Parser SH
-stripHeaderFlag' = OA.flag' SHES 
+stripHeaderFlag' = stripHeaderSHESFlag' <|> stripHeaderSHSTFlag' <|> stripHeaderSHSHFlag'
+
+stripHeaderSHESFlag' :: OA.Parser SH
+stripHeaderSHESFlag' = OA.flag' SHES 
     (M.mconcat
         [ OA.help  "Strip the headers in the file (Exact, without head, or without tail).",
-          OA.short 'S',
-          OA.long  "stripheader" ])
+          OA.short 'E',
+          OA.long  "stripheaderexact" ])
+
+stripHeaderSHSTFlag' :: OA.Parser SH
+stripHeaderSHSTFlag' = OA.flag' SHST
+    (M.mconcat
+        [ OA.help  "Strip the headers in the file (Exact, without head, or without tail).",
+          OA.short 'H',
+          OA.long  "stripheadertail" ])
+
+stripHeaderSHSHFlag' :: OA.Parser SH
+stripHeaderSHSHFlag' = OA.flag' SHST
+    (M.mconcat
+        [ OA.help  "Strip the headers in the file (Exact, without head, or without tail).",
+          OA.short 'T',
+          OA.long  "stripheaderhead" ])
 --------
 
 --switches.  
@@ -195,4 +212,5 @@ parseOutFormatVtbr = OA.eitherReader $ \arg ->
         True  -> Right arg
         False -> Left ("Output format not recognized.\n\
                        \The accepted output format is mgibed.\n")
+
 {-------------------}
