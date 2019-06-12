@@ -43,7 +43,7 @@ library:
     - ScopedTypeVariables
 
 executables:
-  basicvarianttools-exe:
+  Basic-Variant-Tools-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -54,7 +54,7 @@ executables:
     - basicvarianttools
 
 tests:
-  basicvarianttools-test:
+  Basic-Variant-Tools-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -62,4 +62,5 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - basicvarianttools
+    - Basic-Variant-Tools
+    
