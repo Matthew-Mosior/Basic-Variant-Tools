@@ -31,6 +31,10 @@ dependencies:
 - regex-compat >= 0.95.1
 - optparse-applicative >= 0.14.3.0
 - filepath >= 1.4.2.1
+- random >= 1.1
+- tasty >= 1.2.2
+- tasty-quickcheck >= 0.10.1
+- tasty-hunit >= 0.10.0.2
 
 library:
   source-dirs: src
