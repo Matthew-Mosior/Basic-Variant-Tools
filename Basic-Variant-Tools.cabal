@@ -33,7 +33,7 @@ library
       Mam
       Vtbr
   other-modules:
-      Paths_basicvarianttools
+      Paths_Basic_Variant_Tools
   hs-source-dirs:
       src
   default-extensions: MultiWayIf ScopedTypeVariables
@@ -51,16 +51,16 @@ library
     , temporary >=1.3
   default-language: Haskell2010
 
-executable basicvarianttools-exe
+executable Basic-Variant-Tools-exe
   main-is: Main.hs
   other-modules:
-      Paths_basicvarianttools
+      Paths_Basic_Variant_Tools
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , basicvarianttools
+    , Basic-Variant-Tools
     , boxes >=0.1.5
     , directory >=1.3.3.2
     , extra >=1.6.15
@@ -73,17 +73,17 @@ executable basicvarianttools-exe
     , temporary >=1.3
   default-language: Haskell2010
 
-test-suite basicvarianttools-test
+test-suite Basic-Variant-Tools-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_basicvarianttools
+      Paths_Basic_Variant_Tools
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , basicvarianttools
+    , Basic-Variant-Tools
     , boxes >=0.1.5
     , directory >=1.3.3.2
     , extra >=1.6.15
