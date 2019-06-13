@@ -32,4 +32,4 @@ script:
 #Invoke coveralls and send test data to it.
 after_script:
   - cabal install hpc-coveralls
-  - hpc-coveralls Basic-Variant-Tools-test
+  - hpc-coveralls Spec.hs
