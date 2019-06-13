@@ -27,7 +27,7 @@ install:
 
 script:
 # Build the package, its tests, and its docs and run the tests
-- stack --no-terminal test --haddock --no-haddock-deps
+- stack --no-terminal test --haddock --no-haddock-deps --coverage
 
 #Invoke coveralls and send test data to it.
 after_script:
