@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 69ef94d80642a48a35183886f44cdf5529c02c99a2ca71c6750ea211d32f43ac
+-- hash: 160e92b7a36107d7c03d8ba099f7a0d3da52eda55070f3cc321b3e0e99f128cb
 
 name:           Basic-Variant-Tools
 version:        0.1.0.0
@@ -24,7 +24,7 @@ extra-source-files:
 source-repository head
   type: git
   location: https://github.com/Matthew-Mosior/Basic-Variant-Tools
-  
+
 library
   exposed-modules:
       Bvf
@@ -38,16 +38,20 @@ library
       src
   default-extensions: MultiWayIf ScopedTypeVariables
   build-depends:
-      base >=4.7 && <5
+      base >=4.9 && <5
     , boxes >=0.1.5
     , directory >=1.3.3.2
     , extra >=1.6.15
     , filepath >=1.4.2.1
     , optparse-applicative >=0.14.3.0
     , process >=1.6.5.0
+    , random >=1.1
     , regex-compat >=0.95.1
     , regex-tdfa >=1.2.3.2
     , split >=0.2.3.3
+    , tasty >=1.2.2
+    , tasty-hunit >=0.10.0.2
+    , tasty-quickcheck >=0.10.1
     , temporary >=1.3
   default-language: Haskell2010
 
@@ -59,17 +63,21 @@ executable Basic-Variant-Tools-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
-    , Basic-Variant-Tools
+      Basic-Variant-Tools
+    , base >=4.9 && <5
     , boxes >=0.1.5
     , directory >=1.3.3.2
     , extra >=1.6.15
     , filepath >=1.4.2.1
     , optparse-applicative >=0.14.3.0
     , process >=1.6.5.0
+    , random >=1.1
     , regex-compat >=0.95.1
     , regex-tdfa >=1.2.3.2
     , split >=0.2.3.3
+    , tasty >=1.2.2
+    , tasty-hunit >=0.10.0.2
+    , tasty-quickcheck >=0.10.1
     , temporary >=1.3
   default-language: Haskell2010
 
@@ -82,16 +90,20 @@ test-suite Basic-Variant-Tools-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
-    , Basic-Variant-Tools
+      Basic-Variant-Tools
+    , base >=4.9 && <5
     , boxes >=0.1.5
     , directory >=1.3.3.2
     , extra >=1.6.15
     , filepath >=1.4.2.1
     , optparse-applicative >=0.14.3.0
     , process >=1.6.5.0
+    , random >=1.1
     , regex-compat >=0.95.1
     , regex-tdfa >=1.2.3.2
     , split >=0.2.3.3
+    , tasty >=1.2.2
+    , tasty-hunit >=0.10.0.2
+    , tasty-quickcheck >=0.10.1
     , temporary >=1.3
   default-language: Haskell2010
