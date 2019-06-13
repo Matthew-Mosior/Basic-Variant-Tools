@@ -15,6 +15,10 @@ addons:
     packages:
       - libgmp-dev
 
+#Set up environment.
+env:
+- ARGS="--resolver lts-13.22"
+
 before_install:
 # Download and unpack the stack executable
 - mkdir -p ~/.local/bin
@@ -27,7 +31,7 @@ install:
 
 script:
 # Build the package, its tests, and its docs and run the tests
-- stack --no-terminal test --haddock --no-haddock-deps --coverage
+- stack $ARGS --no-terminal test --install-ghc test --coverage
 
 #Invoke coveralls and send test data to it.
 after_script:
