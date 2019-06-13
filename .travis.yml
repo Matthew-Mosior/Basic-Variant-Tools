@@ -31,5 +31,5 @@ script:
 
 #Invoke coveralls and send test data to it.
 after_script:
-  - cabal install hpc-coveralls
-  - hpc-coveralls Spec.hs
+  - travis_retry curl -L https://github.com/rubik/stack-hpc-coveralls/releases/download/v0.0.3.0/shc-linux-x64-$GHCVER.tar.bz2 | tar -xj
+  - ./shc Basic-Variant-Tools Basic-Variant-Tools-test
