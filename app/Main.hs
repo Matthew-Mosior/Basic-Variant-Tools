@@ -14,6 +14,7 @@ module Main where
 
 import Bvf
 import Bvp
+import Bvs
 import Mam
 import Bvtcmp
 import Vtbr
@@ -59,7 +60,6 @@ main = do
                                             Bvp.processArgsAndContentsVcfTvcf (inf,outf,gzipin,gzipout,outputf,bvpcontents)
                                     else do --Run args and contents through processArgsAndContentsTvcfVcf.
                                             Bvp.processArgsAndContentsTvcfVcf (inf,outf,gzipin,gzipout,outputf,bvpcontents)
-
                         else do --Vep or vcf parsing pipeline?
                                 if inf == "vep" && outf == "tvep"
                                     then do --Run args and contents through processArgsAndFilesVepTvep.
@@ -72,6 +72,24 @@ main = do
                                                     Bvp.processArgsAndFilesVcfTvcf (inf,outf,gzipin,gzipout,outputf,fromJust inputfile)
                                             else do --Run args and contents through processArgsAndFilesTvcfVcf.
                                                     Bvp.processArgsAndFilesTvcfVcf (inf,outf,gzipin,gzipout,outputf,fromJust inputfile)
+        --Bvs.
+        Bvs inf gzipin gzipout outputf mgivariantf inputfile -> do
+            --See if file is null.
+            if null inputfile
+                then do --Get stdin.
+                        bvscontents <- getContents
+                        --Vcf or Tvcf pipeline?
+                        if inf == "vcf"  
+                            then do --Run args and contents through processArgsAndContentsVcfTvcf.
+                                    Bvs.processArgsAndContentsVcfMgibed (inf,gzipin,gzipout,outputf,mgivariantf,bvscontents)
+                            else do --Run args and contents through processArgsAndContentsTvcfVcf.
+                                    Bvs.processArgsAndContentsTvcfMgibed (inf,gzipin,gzipout,outputf,mgivariantf,bvscontents)
+            else do --Vcf or Tvcf pipeline?
+                    if inf == "vcf"
+                         then do --Run args and contents through processArgsAndFilesVcfTvcf.
+                                 Bvs.processArgsAndFilesVcfMgibed (inf,gzipin,gzipout,outputf,mgivariantf,fromJust inputfile)
+                         else do --Run args and contents through processArgsAndFilesTvcfVcf.
+                                 Bvs.processArgsAndFilesTvcfMgibed (inf,gzipin,gzipout,outputf,mgivariantf,fromJust inputfile)
         --Mam.
         Mam inputfile -> do
             --Read inputfile.
@@ -79,7 +97,6 @@ main = do
             --Chunk the file.
             let mamfilechunks = (Mam.fileChunker
                                 (words mamreadinputfile))
-
             --Prepare to create the final directorie(s).
             let mamprefinaldirectory = Mam.prepareCreateFinalDirectory mamfilechunks
             --Run IO functions.

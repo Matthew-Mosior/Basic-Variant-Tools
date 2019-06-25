@@ -19,6 +19,7 @@ module Bvtcmp where
 
 import Bvf
 import Bvp
+import Bvs
 import Mam
 import Vtbr
 import Data.Semigroup as DS
@@ -33,6 +34,7 @@ import Data.Monoid as M
 data BVT = 
     Bvf String String SH (Maybe FilePath) 
   | Bvp String String Bool Bool String (Maybe FilePath)
+  | Bvs String Bool Bool String FilePath (Maybe FilePath)  
   | Mam FilePath
   | Vtbr String String Bool Bool String (Maybe FilePath)
   deriving (Eq,Show)
@@ -42,20 +44,23 @@ data BVT =
 {-ParserInfo.-}
 
 bvtParserInfo :: OA.ParserInfo BVT
-bvtParserInfo = bvtInfo bvtParser "Basic Variant Tools: Command-line toolkit for genomic datasets.\n\
-                                  \Basic Variant Tools, Copyright (c) 2019 Matthew Mosior\n\
+bvtParserInfo = bvtInfo bvtParser "Basic Variant Tools:\n\
+                                  \Command-line toolkit for genomic datasets.\n\
+                                  \Copyright (c) 2019 Matthew Mosior\n\
                                   \Version 1.0.\n"
     where
         bvtParser :: OA.Parser BVT
         bvtParser = (OA.subparser . F.foldMap bvtCommand)
             [ ("bvf","Run Basic Variant Filter (bvf).",bvfP)
             , ("bvp","Run Basic Variant Parser (bvp).",bvpP)
+            , ("bvs","Run Basic Variant Selector (bvs).",bvsP)
             , ("mam","Run Move Annotate Merge (mam).",mamP)
             , ("vtbr","Run Variant to bam-readcount (vtbr).",vtbrP)
             ]
         
         bvfP  = Bvf <$> filterFieldsOpt <*> outputFileOpt <*> stripHeaderFlag' <*> inputFileArgOpt 
         bvpP  = Bvp <$> inFormatBvpOpt <*> outFormatBvpOpt <*> gzipInSwitch <*> gzipOutSwitch <*> outputFileOpt <*> inputFileArgOpt
+        bvsP  = Bvs <$> inFormatBvsOpt <*> gzipInSwitch <*> gzipOutSwitch <*> outputFileOpt <*> mgiVariantFileOpt <*> inputFileArgOpt
         mamP  = Mam <$> inputFileArgNonOpt
         vtbrP = Vtbr <$> inFormatVtbrOpt <*> outFormatVtbrOpt <*> gzipInSwitch <*> gzipOutSwitch <*> outputFileOpt <*> inputFileArgOpt
         
@@ -75,15 +80,24 @@ bvtParserInfo = bvtInfo bvtParser "Basic Variant Tools: Command-line toolkit for
 inputFileArgOpt = optional $ OA.strArgument
     (M.mconcat
         [ OA.help    "Input file.",
-          OA.metavar "INPUTFILEOPT" ])
+          OA.metavar "INPUTFILEARG" ])
 
 inputFileArgNonOpt = OA.strArgument
     (M.mconcat
         [ OA.help    "Input file.",
-          OA.metavar "INPUTFILENONOPT" ])
+          OA.metavar "INPUTFILEREQARG" ])
 --------------
  
 --strOptions.
+mgiVariantFileOpt :: OA.Parser FilePath
+mgiVariantFileOpt = OA.strOption
+    (M.mconcat 
+        [ OA.help    "The mgi variant file.",
+          OA.short   'm',
+          OA.long    "mgivariantfile",
+          OA.value   "NONE",
+          OA.metavar "MGIVARIANTFILE" ])
+
 outputFileOpt :: OA.Parser String
 outputFileOpt = OA.strOption
     (M.mconcat
@@ -107,17 +121,25 @@ inFormatBvpOpt = OA.option parseInFormatBvp
     (M.mconcat
         [ OA.help    "The format of the input file.",
           OA.short   'I',
-          OA.long    "informat",
-          OA.metavar "IN" ])
+          OA.long    "informatbvp",
+          OA.metavar "INBVP" ])
         
 outFormatBvpOpt :: OA.Parser String
 outFormatBvpOpt = OA.option parseOutFormatBvp
     (M.mconcat
         [ OA.help    "The format of the output file.",
           OA.short   'O',
-          OA.long    "outformat",
-          OA.metavar "OUT" ])
+          OA.long    "outformatbvp",
+          OA.metavar "OUTBVP" ])
         
+inFormatBvsOpt :: OA.Parser String
+inFormatBvsOpt = OA.option parseInFormatBvs
+    (M.mconcat
+        [ OA.help    "The format of the input file",
+          OA.short   'I',
+          OA.long    "informat",
+          OA.metavar "IN" ])
+
 inFormatVtbrOpt :: OA.Parser String
 inFormatVtbrOpt = OA.option parseInFormatVtbr
     (M.mconcat
@@ -199,12 +221,19 @@ parseOutFormatBvp = OA.eitherReader $ \arg ->
         False -> Left ("Output format not recognized.\n\
                        \Appropriate mappings are: vep <-> tvep and vcf <-> tvcf.\n")
 
+parseInFormatBvs :: ReadM String
+parseInFormatBvs = OA.eitherReader $ \arg ->
+    case Bvs.checkInFormat arg of
+        True  -> Right arg
+        False -> Left ("Input format not recognized.\n\
+                       \Accepted input formats are vcf and tvcf.\n")
+
 parseInFormatVtbr :: ReadM String
 parseInFormatVtbr = OA.eitherReader $ \arg ->
     case Vtbr.checkInFormat arg of
         True  -> Right arg
         False -> Left ("Input format not recognized.\n\
-                       \Accepted input formats are vcf, vep, tvcf and tvep.\n")             
+                       \Accepted input formats are vcf and tvcf.\n")             
            
 parseOutFormatVtbr :: ReadM String
 parseOutFormatVtbr = OA.eitherReader $ \arg ->
