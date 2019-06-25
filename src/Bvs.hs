@@ -135,8 +135,14 @@ onlyDataVcfGrabber xs = DL.filter (onlyDataVcfBool) xs
 variantSelectorVcf :: Int -> Int -> [(String,String)] -> [[String]] -> [[String]]
 variantSelectorVcf _          _        _          [] = []
 variantSelectorVcf _          _        []         _  = []
-variantSelectorVcf chromindex posindex ((a,b):xs) ys = (DL.filter (\c -> (a == (map (\y -> dropPrefix "Chr" y) (map (\x -> dropPrefix "chr" x) c) DL.!! chromindex)) && (b == (c DL.!! posindex))) ys) ++ (variantSelectorVcf chromindex posindex xs ys)
- 
+variantSelectorVcf chromindex posindex ((a,b):xs) ys =
+    (DL.filter (\c -> (a == (map (\y -> dropPrefix "Chr" y)
+    (DL.map (\x -> dropPrefix "chr" x) c) DL.!! chromindex)) &&
+    (b == (c DL.!! posindex)) ||
+    ((show ((read b) - 1)) == (c DL.!! posindex)) ||
+    ((show ((read b) + 1)) == (c DL.!! posindex))) ys) ++
+    (variantSelectorVcf chromindex posindex xs ys)
+
 {----------------------------------}
 
 {-Printing functions.-}
