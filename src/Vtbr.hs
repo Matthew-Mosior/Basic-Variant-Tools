@@ -236,7 +236,7 @@ bamReadcountFormatVcf (x:xs) = [smallBamReadcountFormatVcf x] ++ (bamReadcountFo
         smallBamReadcountFormatVcf :: (String,Int,(String,String)) -> (String,String,String,String,String)
         smallBamReadcountFormatVcf (a,b,(c,d)) = (a,
                                                   show (b + 1),
-                                                  show (detectRefVsAltVcf (b + 1) c d),
+                                                  show ((\(aa,bb,cc) -> aa) (detectRefVsAltVcf (b + 1) c d)),
                                                   (\(aa,bb,cc) -> bb) (detectRefVsAltVcf (b + 1) c d),
                                                   (\(aa,bb,cc) -> cc) (detectRefVsAltVcf (b + 1) c d))
         --detectRefVsAltVcf
@@ -303,6 +303,7 @@ gzipPrintFile outfilestring xs = do
     SIO.writeFile outfilestring intercalatedxs
     --Gzip outfile.
     SP.readProcess "gzip" [outfilestring] []
+
  
 {---------------------}
 
@@ -312,7 +313,7 @@ gzipPrintFile outfilestring xs = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndFilesVepMgibed :: (String,String,Bool,Bool,String,FilePath) -> IO ()
-processArgsAndFilesVepMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndFilesVepMgibed ([],[],_,_,[],[])                           = return ()
 processArgsAndFilesVepMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
     --Check to see if inputfile is gzip compressed.
     if gzipin
@@ -378,7 +379,7 @@ processArgsAndFilesVepMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndContentsVepMgibed :: (String,String,Bool,Bool,String,String) -> IO ()
-processArgsAndContentsVepMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndContentsVepMgibed ([],[],_,_,[],[])                         = return ()
 processArgsAndContentsVepMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
     --Apply lineFeed function to content.
     let processedfile = lineFeed content
@@ -410,7 +411,7 @@ processArgsAndContentsVepMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndFilesTvepMgibed :: (String,String,Bool,Bool,String,FilePath) -> IO ()
-processArgsAndFilesTvepMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndFilesTvepMgibed ([],[],_,_,[],[])                           = return ()
 processArgsAndFilesTvepMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
     --Check to see if inputfile is gzip compressed.
     if gzipin
@@ -480,7 +481,7 @@ processArgsAndFilesTvepMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndContentsTvepMgibed :: (String,String,Bool,Bool,String,String) -> IO ()
-processArgsAndContentsTvepMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndContentsTvepMgibed ([],[],_,_,[],[])                         = return ()
 processArgsAndContentsTvepMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
     --Apply lineFeed function to content.
     let processedfile = lineFeed content
@@ -514,7 +515,7 @@ processArgsAndContentsTvepMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndFilesVcfMgibed :: (String,String,Bool,Bool,String,FilePath) -> IO ()
-processArgsAndFilesVcfMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndFilesVcfMgibed ([],[],_,_,[],[])                           = return ()
 processArgsAndFilesVcfMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
     --Check to see if inputfile is gzip compressed.
     if gzipin
@@ -572,7 +573,7 @@ processArgsAndFilesVcfMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndContentsVcfMgibed :: (String,String,Bool,Bool,String,String) -> IO ()
-processArgsAndContentsVcfMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndContentsVcfMgibed ([],[],_,_,[],[])                         = return ()
 processArgsAndContentsVcfMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
     --Apply lineFeed function to content.
     let processedfile = lineFeed content
@@ -600,7 +601,7 @@ processArgsAndContentsVcfMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndFilesTvcfMgibed :: (String,String,Bool,Bool,String,FilePath) -> IO ()
-processArgsAndFilesTvcfMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndFilesTvcfMgibed ([],[],_,_,[],[])                           = return ()
 processArgsAndFilesTvcfMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
     --Check to see if inputfile is gzip compressed.
     if gzipin
@@ -658,7 +659,7 @@ processArgsAndFilesTvcfMgibed (inf,outf,gzipin,gzipout,outputf,inputfile) = do
 --walk through each of the command-line
 --arguments and files provided by the user.
 processArgsAndContentsTvcfMgibed :: (String,String,Bool,Bool,String,String) -> IO ()
-processArgsAndContentsTvcfMgibed ([],[],_,_,[],[]) = return ()
+processArgsAndContentsTvcfMgibed ([],[],_,_,[],[])                         = return ()
 processArgsAndContentsTvcfMgibed (inf,outf,gzipin,gzipout,outputf,content) = do
     --Apply lineFeed function to content.
     let processedfile = lineFeed content
