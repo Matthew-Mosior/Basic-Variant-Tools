@@ -212,7 +212,7 @@ customNotDataFilter xs ys = smallCustomFilter (DL.head xs) ys
 --characters character class.
 customSplit :: String -> [(String,String)]
 customSplit [] = []
-customSplit (x:xs) = if (DC.isDigit x) || (DC.isLower x) || (DC.isUpper x) || (x == '.') || (x == '-') 
+customSplit (x:xs) = if (DC.isDigit x) || (DC.isLower x) || (DC.isUpper x) || (x == '.') || (x == '-') || (x == ',') 
                          then [("",[x])] ++ customSplit xs
                          else [([x],"")] ++ customSplit xs
 
@@ -237,6 +237,30 @@ smallSort (x:xs) = [DL.sortBy (\(_,_,a) (_,_,b) -> compare a b) x] ++ (smallSort
 --serve as a stronger version of ==.
 strongEq :: (Eq a) => [a] -> [a] -> Bool
 strongEq x y = DL.null (x \\ y) && DL.null (y \\ x)
+
+--equalityListCheck -> This function will
+--serve to grab all elements for == filter.
+equalityListCheck :: [String] -> [(String,Int,Int)] -> [[(String,Int,Int)]]
+equalityListCheck _ []      = []
+equalityListCheck [] _      = []
+equalityListCheck (x:xs) ys = [smallEqualityListCheck x ys] ++ (equalityListCheck xs ys)
+    where
+        --Nested function definitions.--
+        --smallEqualityListCheck
+        smallEqualityListCheck :: String -> [(String,Int,Int)] -> [(String,Int,Int)]
+        smallEqualityListCheck [] _      = []
+        smallEqualityListCheck _ []      = []
+        smallEqualityListCheck x  (y:ys) = if smallPredicate x (tripletFst y)
+                                               then [y] ++ (smallEqualityListCheck x ys)
+                                               else smallEqualityListCheck x ys
+        --smallPredicate
+        smallPredicate :: String -> String -> Bool
+        smallPredicate [] _  = False
+        smallPredicate _  [] = False
+        smallPredicate x  y  = if x == y
+                                   then True
+                                   else False
+        --------------------------------
 
 {----------------------------}
 
@@ -422,8 +446,9 @@ specificFilters (x:xs) ys = do
        | (isAlphaList onex) && 
          (DL.elem '|' twox) && 
          (DL.isInfixOf "==" threex) ->
-         [((notdata) ++ ((DL.filter (\(y,_,_) -> y == 
-          (snd threexcomparison)) onlydata)))] ++ (specificFilters xs ys)
+         [((notdata) 
+          ++ (DL.concat (equalityListCheck (DLS.splitOneOf "," (snd threexcomparison)) onlydata)))]
+          ++ (specificFilters xs ys)
        | otherwise -> specificFilters xs ys
  
 --addNonFilters -> This function will
