@@ -175,7 +175,7 @@ bamReadcountFormatVep (x:xs) = [smallBamReadcountFormatVep x] ++ (bamReadcountFo
                                    then a + 1
                                    --Deletion.
                                    else if c == "-"
-                                       then a 
+                                       then a + (DL.length (b DL.\\ c)) - 1 
                                        --Default.
                                        else a
         --------------------------------
@@ -243,10 +243,10 @@ bamReadcountFormatVcf (x:xs) = [smallBamReadcountFormatVcf x] ++ (bamReadcountFo
         detectRefVsAltVcf :: Int -> String -> String -> (Int,String,String)
         detectRefVsAltVcf a b c = --Insertion.
                                if DL.length b < DL.length c 
-                                   then (a + (DL.length c - DL.length b),"-",c)
+                                   then (a + 1,"-",DL.tail c)
                                    --Deletion.
                                    else if DL.length b > DL.length c
-                                       then (a,b,"-")
+                                       then (a + (DL.length (b DL.\\ c)) - 1,DL.tail b,"-")
                                        --Default.
                                        else (a,b,c)
 
