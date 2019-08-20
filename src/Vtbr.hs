@@ -179,7 +179,7 @@ bamReadcountFormatVep (x:xs) = [smallBamReadcountFormatVep x] ++ (bamReadcountFo
                                    then (a - 1,a)
                                    --Deletion.
                                    else if c == "-"
-                                       then (a,a + (DL.length b) -1) 
+                                       then (a,a + (DL.length b) - 1) 
                                        --Default.
                                        else (a,a)
         --------------------------------
